@@ -14,40 +14,48 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String PAPER_PARCEL_KEY = "paper_parcel_key";
+    private static final String ALT_KEY = "alt_key";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        if (getIntent().getParcelableExtra("A") == null) {
-//            ArrayList<BObject> bList = new ArrayList<>();
-//            bList.add(new BObject("int", new ParcelableInt(42)));
-//            bList.add(new BObject("string", new ParcelableString("cheese")));
-//
-//            AObject aObject = new AObject(bList);
-//
-//            Intent intent = new Intent(this, MainActivity.class);
-//            intent.putExtra("A", aObject);
-//            startActivity(intent);
-//        } else {
-//            AObject aObjectResult = getIntent().getParcelableExtra("A");
-//            ((TextView) findViewById(R.id.text)).setText("It Worked!");
-//        }
+        // Check if there are extras:
+        if (getIntent().getParcelableExtra(PAPER_PARCEL_KEY) == null &&
+                getIntent().getParcelableExtra(ALT_KEY) == null) {
+            // Extras don't exist, this is the first time this activity has been run
 
-        if (getIntent().getParcelableExtra("PLANT") == null) {
-            ArrayList<PlantProperty> properties = new ArrayList<>();
-            properties.add(new PlantProperty("string", new ParcelableString("cheese")));
-            properties.add(new PlantProperty("int", new ParcelableInt(42)));
+            // Create data that will be contained in AObjects
+            ArrayList<BObject> bList = new ArrayList<>();
+            bList.add(new BObject("int", new ParcelableInt(42)));
+            bList.add(new BObject("string", new ParcelableString("cheese")));
 
-            Plant plant = new Plant();
-            plant.setProperties(properties);
+            // Create AObjects
+            AObjectPaperParcel aObjectPaperParcel = new AObjectPaperParcel(bList);
+            AObjectAlt aObjectAlt = new AObjectAlt(bList);
 
+            // Send intent with extras to this activity
             Intent intent = new Intent(this, MainActivity.class);
-            intent.putExtra("PLANT", plant);
+            intent.putExtra(PAPER_PARCEL_KEY, aObjectPaperParcel); // Comment this line to see that alt works
+            intent.putExtra(ALT_KEY, aObjectAlt);
             startActivity(intent);
         } else {
-            Plant plantResult = getIntent().getParcelableExtra("PLANT");
-            ((TextView) findViewById(R.id.text)).setText("It Worked!");
+            // Extras exist, retrieve them
+
+            // Retrieve PaperParcel extra
+            AObjectPaperParcel result = getIntent().getParcelableExtra(PAPER_PARCEL_KEY);
+            if (result != null) {
+                ((TextView) findViewById(R.id.text)).setText("AObjectPaperParcel Worked!");
+            }
+
+            // Retrieve Alt extra
+            AObjectAlt result2 = getIntent().getParcelableExtra(ALT_KEY);
+            if (result2 != null) {
+                ((TextView) findViewById(R.id.textAlt)).setText("AObjectAlt Worked!");
+            }
+
         }
     }
 }

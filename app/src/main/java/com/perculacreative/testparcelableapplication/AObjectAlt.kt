@@ -9,7 +9,7 @@ import java.util.*
  */
 
 //@PaperParcel
-data class AObject(var data: ArrayList<BObject>) : Parcelable {
+data class AObjectAlt(var data: ArrayList<BObject>) : Parcelable {
     constructor(source: Parcel) : this(
             source.createTypedArrayList(BObject.CREATOR)
     )
@@ -22,9 +22,9 @@ data class AObject(var data: ArrayList<BObject>) : Parcelable {
 
     companion object {
         @JvmField
-        val CREATOR: Parcelable.Creator<AObject> = object : Parcelable.Creator<AObject> {
-            override fun createFromParcel(source: Parcel): AObject = AObject(source)
-            override fun newArray(size: Int): Array<AObject?> = arrayOfNulls(size)
+        val CREATOR: Parcelable.Creator<AObjectAlt> = object : Parcelable.Creator<AObjectAlt> {
+            override fun createFromParcel(source: Parcel): AObjectAlt = AObjectAlt(source)
+            override fun newArray(size: Int): Array<AObjectAlt?> = arrayOfNulls(size)
         }
     }
 }
